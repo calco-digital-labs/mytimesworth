@@ -131,7 +131,8 @@
   text-align: left;
 }
 
-.calculator-form input {
+.calculator-form input,
+.calculator-form select {
   width: 100%;
   padding: 15px 16px;
   border: 1px solid #26314a;
@@ -140,9 +141,11 @@
   color: #f8fafc;
   font-size: 1rem;
   outline: none;
+  box-sizing: border-box;
 }
 
-.calculator-form input:focus {
+.calculator-form input:focus,
+.calculator-form select:focus {
   border-color: #42e58b;
 }
 
@@ -244,7 +247,12 @@
 
     <label for="shiftHours">Extra shift length</label>
     <input type="number" id="shiftHours" placeholder="8" min="0" step="0.25">
-
+<label for="overtimeMultiplier">Overtime rate</label>
+<select id="overtimeMultiplier">
+  <option value="1.5" selected>1.5× (time and a half)</option>
+  <option value="2">2× (double time)</option>
+  <option value="1">1× (no overtime premium)</option>
+</select>
     <button type="button" id="calculateButton">Calculate My Shift</button>
 </div>
           <div class="calculator-result" id="calculatorResult">
@@ -266,7 +274,7 @@
       const hourlyRate = parseFloat(document.getElementById("hourlyRate").value);
       const hoursWorked = parseFloat(document.getElementById("hoursWorked").value);
       const shiftHours = parseFloat(document.getElementById("shiftHours").value);
-
+      const overtimeMultiplier = parseFloat(document.getElementById("overtimeMultiplier").value);
       const resultAmount = document.getElementById("resultAmount");
       const resultDetails = document.getElementById("resultDetails");
 
@@ -274,6 +282,7 @@
         Number.isNaN(hourlyRate) ||
         Number.isNaN(hoursWorked) ||
         Number.isNaN(shiftHours) ||
+        Number.isNaN(overtimeMultiplier) ||
         hourlyRate <= 0 ||
         hoursWorked < 0 ||
         shiftHours <= 0
@@ -289,7 +298,7 @@
       const overtimeShiftHours = Math.max(0, shiftHours - regularShiftHours);
 
       const regularPay = regularShiftHours * hourlyRate;
-      const overtimeRate = hourlyRate * 1.5;
+      const overtimeRate = hourlyRate * overtimeMultiplier;
       const overtimePay = overtimeShiftHours * overtimeRate;
       const totalShiftPay = regularPay + overtimePay;
 
