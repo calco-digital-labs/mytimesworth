@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>MyTime$Worth | Know What Your Time Is Worth</title>
+
+  <meta
+    name="description"
+    content="MyTime$Worth helps hourly workers understand what their time earns. Calculate regular pay, overtime, extra shifts, and more."
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #0b1020;
+      color: #ffffff;
+    }
+
+    .page {
+      width: min(100% - 32px, 1100px);
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 24px 0;
+    }
+
+    .brand {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-money {
+      color: #42e58b;
+    }
+
+    main {
+      display: flex;
+      align-items: center;
+      min-height: calc(100vh - 90px);
+      padding: 40px 0 80px;
+    }
+
+    .hero {
+      width: 100%;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 18px;
+      padding: 8px 14px;
+      border: 1px solid rgba(66, 229, 139, 0.25);
+      border-radius: 999px;
+      background: rgba(66, 229, 139, 0.08);
+      color: #7af0ad;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    h1 {
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: clamp(2.5rem, 8vw, 5.5rem);
+      line-height: 0.98;
+      letter-spacing: -0.06em;
+    }
+
+    .highlight {
+      color: #42e58b;
+    }
+
+    .hero-text {
+      max-width: 620px;
+      margin: 24px auto 0;
+      color: #aeb8cc;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .calculator-card {
+      max-width: 620px;
+      margin: 38px auto 0;
+      padding: 26px;
+      border: 1px solid #26314a;
+      border-radius: 24px;
+      background: #11182b;
+      text-align: left;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+
+    .calculator-card h2 {
+      margin-bottom: 8px;
+      font-size: 1.4rem;
+    }
+
+    .calculator-card p {
+      color: #98a5bd;
+      line-height: 1.6;
+    }
+
+    .coming-soon {
+      margin-top: 22px;
+      padding: 16px;
+      border-radius: 14px;
+      background: #0b1020;
+      color: #42e58b;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding-top: 20px;
+      }
+
+      main {
+        align-items: flex-start;
+        padding-top: 70px;
+      }
+
+      .calculator-card {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header>
+      <div class="brand">
+        MyTime<span class="brand-money">$</span>Worth
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow">
+          Built for hourly workers
+        </div>
+
+        <h1>
+          Know what your
+          <span class="highlight">time is worth.</span>
+        </h1>
+
+        <p class="hero-text">
+          Before you say yes to another shift, know what your time
+          will actually earn you. Calculate regular pay, overtime,
+          extra shifts, and more.
+        </p>
+
+        <div class="calculator-card">
+          <h2>💰 Is this extra shift worth it?</h2>
+
+          <p>
+            Enter your pay rate, hours already worked, and the extra
+            shift you're considering. MyTime$Worth will do the math.
+          </p>
+
+          <div class="coming-soon">
+            Extra Shift Calculator — Coming Next
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
