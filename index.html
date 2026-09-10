@@ -256,7 +256,54 @@
 </div>
         </div>
       </section>
-    </main>
+        </main>
   </div>
+
+  <script>
+    const calculateButton = document.getElementById("calculateButton");
+
+    calculateButton.addEventListener("click", function () {
+      const hourlyRate = parseFloat(document.getElementById("hourlyRate").value);
+      const hoursWorked = parseFloat(document.getElementById("hoursWorked").value);
+      const shiftHours = parseFloat(document.getElementById("shiftHours").value);
+
+      const resultAmount = document.getElementById("resultAmount");
+      const resultDetails = document.getElementById("resultDetails");
+
+      if (
+        Number.isNaN(hourlyRate) ||
+        Number.isNaN(hoursWorked) ||
+        Number.isNaN(shiftHours) ||
+        hourlyRate <= 0 ||
+        hoursWorked < 0 ||
+        shiftHours <= 0
+      ) {
+        resultAmount.textContent = "$0.00";
+        resultDetails.textContent =
+          "Please enter a valid pay rate, hours already worked, and extra shift length.";
+        return;
+      }
+
+      const regularHoursAvailable = Math.max(0, 40 - hoursWorked);
+      const regularShiftHours = Math.min(shiftHours, regularHoursAvailable);
+      const overtimeShiftHours = Math.max(0, shiftHours - regularShiftHours);
+
+      const regularPay = regularShiftHours * hourlyRate;
+      const overtimeRate = hourlyRate * 1.5;
+      const overtimePay = overtimeShiftHours * overtimeRate;
+      const totalShiftPay = regularPay + overtimePay;
+
+      resultAmount.textContent = `$${totalShiftPay.toFixed(2)}`;
+
+      if (overtimeShiftHours > 0) {
+        resultDetails.textContent =
+          `${regularShiftHours.toFixed(2)} regular hours = $${regularPay.toFixed(2)} • ` +
+          `${overtimeShiftHours.toFixed(2)} overtime hours at $${overtimeRate.toFixed(2)}/hr = $${overtimePay.toFixed(2)}`;
+      } else {
+        resultDetails.textContent =
+          `${regularShiftHours.toFixed(2)} regular hours at $${hourlyRate.toFixed(2)}/hr.`;
+      }
+    });
+  </script>
 </body>
 </html>
