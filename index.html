@@ -284,10 +284,22 @@
 <div class="field-note">
   Optional — extra hourly pay for nights, weekends, or special shifts.
 </div>
+<label for="shiftCosts">Extra costs for this shift</label>
+<input
+  type="number"
+  id="shiftCosts"
+  placeholder="0.00"
+  min="0"
+  step="0.01"
+>
+
+<div class="field-note">
+  Optional — gas, parking, tolls, food, childcare, or other shift-related costs.
+</div>
     <button type="button" id="calculateButton">Calculate My Shift</button>
 </div>
           <div class="calculator-result" id="calculatorResult">
-  <div class="result-label">Estimated take-home from this shift</div>
+  <div class="result-label">What this shift is worth after deductions &amp; costs</div>
   <div class="result-amount" id="resultAmount">$0.00</div>
   <div class="result-details" id="resultDetails">
     Enter your information above and tap Calculate My Shift.
@@ -310,6 +322,12 @@
   document.getElementById("deductionRate").value;
       const shiftDifferentialInput = document.getElementById("shiftDifferential").value;
 const shiftDifferential = shiftDifferentialInput === "" ? 0 : parseFloat(shiftDifferentialInput);
+      const shiftCostsInput =
+document.getElementById("shiftCosts").value;
+
+const shiftCosts =
+shiftCostsInput === "" ? 0 :
+parseFloat(shiftCostsInput);
       const deductionRate =
   deductionInput === "" ? 0 : parseFloat(deductionInput);
       const resultAmount = document.getElementById("resultAmount");
@@ -322,12 +340,14 @@ const shiftDifferential = shiftDifferentialInput === "" ? 0 : parseFloat(shiftDi
   Number.isNaN(overtimeMultiplier) ||
   Number.isNaN(deductionRate) ||
   Number.isNaN(shiftDifferential) ||
+  Number.isNaN(shiftCosts) ||
   hourlyRate <= 0 ||
   hoursWorked < 0 ||
   shiftHours <= 0 ||
   deductionRate < 0 ||
   deductionRate > 100 ||
-  shiftDifferential < 0
+  shiftDifferential < 0 ||
+  shiftCosts < 0
 ) {
         resultAmount.textContent = "$0.00";
         resultDetails.textContent =
@@ -346,10 +366,12 @@ const overtimePay = overtimeShiftHours * overtimeRate;
 const totalShiftPay = regularPay + overtimePay + differentialPay;
 const estimatedDeductions = totalShiftPay * (deductionRate / 100);
 const estimatedTakeHome = totalShiftPay - estimatedDeductions;
-      const effectiveGrossRate = totalShiftPay / shiftHours;
-const effectiveTakeHomeRate = estimatedTakeHome / shiftHours;
+const finalShiftValue = estimatedTakeHome - shiftCosts;
+
+const effectiveGrossRate = totalShiftPay / shiftHours;
+const effectiveTakeHomeRate = finalShiftValue / shiftHours;
       resultAmount.textContent =
-  `$${estimatedTakeHome.toFixed(2)}`;
+  `$${finalShiftValue.toFixed(2)}`;
 
       if (overtimeShiftHours > 0) {
   resultDetails.textContent =
@@ -358,16 +380,18 @@ const effectiveTakeHomeRate = estimatedTakeHome / shiftHours;
     `${overtimeShiftHours.toFixed(2)} overtime hours at $${overtimeRate.toFixed(2)}/hr = $${overtimePay.toFixed(2)} • ` +
     `Shift differential: $${differentialPay.toFixed(2)} • ` +
     `Estimated deductions (${deductionRate.toFixed(0)}%): $${estimatedDeductions.toFixed(2)} • ` +
+    `Shift costs: $${shiftCosts.toFixed(2)} • ` +
     `Effective gross rate: $${effectiveGrossRate.toFixed(2)}/hr • ` +
-    `Effective take-home rate: $${effectiveTakeHomeRate.toFixed(2)}/hr`;
+    `Effective take-home rate after costs: $${effectiveTakeHomeRate.toFixed(2)}/hr`;
 } else {
   resultDetails.textContent =
     `Gross shift pay: $${totalShiftPay.toFixed(2)} • ` +
     `${regularShiftHours.toFixed(2)} regular hours at $${hourlyRate.toFixed(2)}/hr • ` +
     `Shift differential: $${differentialPay.toFixed(2)} • ` +
     `Estimated deductions (${deductionRate.toFixed(0)}%): $${estimatedDeductions.toFixed(2)} • ` +
+    `Shift costs: $${shiftCosts.toFixed(2)} • ` +
     `Effective gross rate: $${effectiveGrossRate.toFixed(2)}/hr • ` +
-    `Effective take-home rate: $${effectiveTakeHomeRate.toFixed(2)}/hr`;
+    `Effective take-home rate after costs: $${effectiveTakeHomeRate.toFixed(2)}/hr`;
 }
     });
   </script>
