@@ -143,7 +143,13 @@
   outline: none;
   box-sizing: border-box;
 }
-
+.field-note {
+  margin-top: -6px;
+  color: #98a5bd;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  text-align: left;
+}
 .calculator-form input:focus,
 .calculator-form select:focus {
   border-color: #42e58b;
@@ -253,10 +259,23 @@
   <option value="2">2× (double time)</option>
   <option value="1">1× (no overtime premium)</option>
 </select>
+    <label for="deductionRate">Estimated deductions</label>
+<input
+  type="number"
+  id="deductionRate"
+  placeholder="20"
+  min="0"
+  max="100"
+  step="1"
+>
+
+<div class="field-note">
+  Optional — enter your estimated tax/deduction percentage.
+</div>
     <button type="button" id="calculateButton">Calculate My Shift</button>
 </div>
           <div class="calculator-result" id="calculatorResult">
-  <div class="result-label">Your extra shift is worth</div>
+  <div class="result-label">Estimated take-home from this shift</div>
   <div class="result-amount" id="resultAmount">$0.00</div>
   <div class="result-details" id="resultDetails">
     Enter your information above and tap Calculate My Shift.
@@ -275,6 +294,11 @@
       const hoursWorked = parseFloat(document.getElementById("hoursWorked").value);
       const shiftHours = parseFloat(document.getElementById("shiftHours").value);
       const overtimeMultiplier = parseFloat(document.getElementById("overtimeMultiplier").value);
+      const deductionInput =
+  document.getElementById("deductionRate").value;
+
+      const deductionRate =
+  deductionInput === "" ? 0 : parseFloat(deductionInput);
       const resultAmount = document.getElementById("resultAmount");
       const resultDetails = document.getElementById("resultDetails");
 
@@ -283,9 +307,12 @@
         Number.isNaN(hoursWorked) ||
         Number.isNaN(shiftHours) ||
         Number.isNaN(overtimeMultiplier) ||
-        hourlyRate <= 0 ||
-        hoursWorked < 0 ||
-        shiftHours <= 0
+Number.isNaN(deductionRate) ||
+hourlyRate <= 0 ||
+hoursWorked < 0 ||
+shiftHours <= 0 ||
+deductionRate < 0 ||
+deductionRate > 100
       ) {
         resultAmount.textContent = "$0.00";
         resultDetails.textContent =
@@ -301,17 +328,23 @@
       const overtimeRate = hourlyRate * overtimeMultiplier;
       const overtimePay = overtimeShiftHours * overtimeRate;
       const totalShiftPay = regularPay + overtimePay;
-
-      resultAmount.textContent = `$${totalShiftPay.toFixed(2)}`;
+const estimatedDeductions = totalShiftPay * (deductionRate / 100);
+const estimatedTakeHome = totalShiftPay - estimatedDeductions;
+      resultAmount.textContent =
+  `$${estimatedTakeHome.toFixed(2)}`;
 
       if (overtimeShiftHours > 0) {
-        resultDetails.textContent =
-          `${regularShiftHours.toFixed(2)} regular hours = $${regularPay.toFixed(2)} • ` +
-          `${overtimeShiftHours.toFixed(2)} overtime hours at $${overtimeRate.toFixed(2)}/hr = $${overtimePay.toFixed(2)}`;
-      } else {
-        resultDetails.textContent =
-          `${regularShiftHours.toFixed(2)} regular hours at $${hourlyRate.toFixed(2)}/hr.`;
-      }
+  resultDetails.textContent =
+    `Gross shift pay: $${totalShiftPay.toFixed(2)} • ` +
+    `${regularShiftHours.toFixed(2)} regular hours = $${regularPay.toFixed(2)} • ` +
+    `${overtimeShiftHours.toFixed(2)} overtime hours at $${overtimeRate.toFixed(2)}/hr = $${overtimePay.toFixed(2)} • ` +
+    `Estimated deductions (${deductionRate.toFixed(0)}%): $${estimatedDeductions.toFixed(2)}`;
+} else {
+  resultDetails.textContent =
+    `Gross shift pay: $${totalShiftPay.toFixed(2)} • ` +
+    `${regularShiftHours.toFixed(2)} regular hours at $${hourlyRate.toFixed(2)}/hr • ` +
+    `Estimated deductions (${deductionRate.toFixed(0)}%): $${estimatedDeductions.toFixed(2)}`;
+}
     });
   </script>
 </body>
