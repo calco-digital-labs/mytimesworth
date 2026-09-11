@@ -200,7 +200,15 @@
   font-weight: 800;
   text-align: center;
 }
-
+.decision-message {
+  max-width: 320px;
+  margin: 0 auto 14px;
+  color: #c7d2e8;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: center;
+}
 .result-details {
   color: #f8fafc;
   font-size: 0.95rem;
@@ -314,7 +322,8 @@
   <div class="result-label">What this shift is worth after deductions &amp; costs</div>
   <div class="result-amount" id="resultAmount">$0.00</div>
             <div class="value-badge" id="valueBadge">Waiting for calculation</div>
-  <div class="result-details" id="resultDetails">
+<div class="decision-message" id="decisionMessage">Enter your shift details to see how this compares with your normal take-home value.</div>
+            <div class="result-details" id="resultDetails">
     Enter your information above and tap Calculate My Shift.
   </div>
 </div>
@@ -347,6 +356,8 @@ parseFloat(shiftCostsInput);
       const resultDetails = document.getElementById("resultDetails");
       const valueBadge =
 document.getElementById("valueBadge");
+      const decisionMessage =
+  document.getElementById("decisionMessage");
 
       if (
   Number.isNaN(hourlyRate) ||
@@ -402,6 +413,16 @@ if (shiftValueRatio >= 1.1) {
   shiftValueLabel = "Below normal value";
 }
       valueBadge.textContent = shiftValueLabel;
+      if (shiftValueRatio >= 1.1) {
+  decisionMessage.textContent =
+    "This shift pays noticeably more per hour after deductions and costs than your normal take-home rate.";
+} else if (shiftValueRatio >= 0.9) {
+  decisionMessage.textContent =
+    "This shift is close to your normal take-home value after deductions and costs.";
+} else {
+  decisionMessage.textContent =
+    "After deductions and shift-related costs, this shift pays less per hour than your normal take-home rate.";
+}
       resultAmount.textContent =
   `$${finalShiftValue.toFixed(2)}`;
 
