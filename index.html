@@ -188,6 +188,18 @@
   font-weight: 900;
   margin-bottom: 8px;
 }
+    .value-badge {
+  display: inline-block;
+  margin: 0 auto 12px;
+  padding: 8px 12px;
+  border: 1px solid #26314a;
+  border-radius: 999px;
+  background: #0b1020;
+  color: #f8fafc;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-align: center;
+}
 
 .result-details {
   color: #f8fafc;
@@ -301,6 +313,7 @@
           <div class="calculator-result" id="calculatorResult">
   <div class="result-label">What this shift is worth after deductions &amp; costs</div>
   <div class="result-amount" id="resultAmount">$0.00</div>
+            <div class="value-badge" id="valueBadge">Waiting for calculation</div>
   <div class="result-details" id="resultDetails">
     Enter your information above and tap Calculate My Shift.
   </div>
@@ -332,6 +345,8 @@ parseFloat(shiftCostsInput);
   deductionInput === "" ? 0 : parseFloat(deductionInput);
       const resultAmount = document.getElementById("resultAmount");
       const resultDetails = document.getElementById("resultDetails");
+      const valueBadge =
+document.getElementById("valueBadge");
 
       if (
   Number.isNaN(hourlyRate) ||
@@ -370,6 +385,23 @@ const finalShiftValue = estimatedTakeHome - shiftCosts;
 
 const effectiveGrossRate = totalShiftPay / shiftHours;
 const effectiveTakeHomeRate = finalShiftValue / shiftHours;
+  const normalTakeHomeRate =
+  hourlyRate * (1 - deductionRate / 100);
+
+const shiftValueRatio =
+  normalTakeHomeRate > 0
+    ? effectiveTakeHomeRate / normalTakeHomeRate
+    : 0;
+      let shiftValueLabel;
+
+if (shiftValueRatio >= 1.1) {
+  shiftValueLabel = "Above normal value";
+} else if (shiftValueRatio >= 0.9) {
+  shiftValueLabel = "Near normal value";
+} else {
+  shiftValueLabel = "Below normal value";
+}
+      valueBadge.textContent = shiftValueLabel;
       resultAmount.textContent =
   `$${finalShiftValue.toFixed(2)}`;
 
