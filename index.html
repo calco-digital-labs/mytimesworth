@@ -346,6 +346,8 @@ const overtimePay = overtimeShiftHours * overtimeRate;
 const totalShiftPay = regularPay + overtimePay + differentialPay;
 const estimatedDeductions = totalShiftPay * (deductionRate / 100);
 const estimatedTakeHome = totalShiftPay - estimatedDeductions;
+      const effectiveGrossRate = totalShiftPay / shiftHours;
+const effectiveTakeHomeRate = estimatedTakeHome / shiftHours;
       resultAmount.textContent =
   `$${estimatedTakeHome.toFixed(2)}`;
 
@@ -355,13 +357,17 @@ const estimatedTakeHome = totalShiftPay - estimatedDeductions;
     `${regularShiftHours.toFixed(2)} regular hours = $${regularPay.toFixed(2)} • ` +
     `${overtimeShiftHours.toFixed(2)} overtime hours at $${overtimeRate.toFixed(2)}/hr = $${overtimePay.toFixed(2)} • ` +
     `Shift differential: $${differentialPay.toFixed(2)} • ` +
-    `Estimated deductions (${deductionRate.toFixed(0)}%): $${estimatedDeductions.toFixed(2)}`;
+    `Estimated deductions (${deductionRate.toFixed(0)}%): $${estimatedDeductions.toFixed(2)} • ` +
+    `Effective gross rate: $${effectiveGrossRate.toFixed(2)}/hr • ` +
+    `Effective take-home rate: $${effectiveTakeHomeRate.toFixed(2)}/hr`;
 } else {
   resultDetails.textContent =
     `Gross shift pay: $${totalShiftPay.toFixed(2)} • ` +
     `${regularShiftHours.toFixed(2)} regular hours at $${hourlyRate.toFixed(2)}/hr • ` +
     `Shift differential: $${differentialPay.toFixed(2)} • ` +
-    `Estimated deductions (${deductionRate.toFixed(0)}%): $${estimatedDeductions.toFixed(2)}`;
+    `Estimated deductions (${deductionRate.toFixed(0)}%): $${estimatedDeductions.toFixed(2)} • ` +
+    `Effective gross rate: $${effectiveGrossRate.toFixed(2)}/hr • ` +
+    `Effective take-home rate: $${effectiveTakeHomeRate.toFixed(2)}/hr`;
 }
     });
   </script>
